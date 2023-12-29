@@ -1,7 +1,19 @@
+import { Budge } from './components/Budge';
+import { FormAddProduct } from './components/FormAddProduct';
+import { Header } from './components/Header';
+import { ProductList } from './components/ProductList';
+
 export default function Home() {
 	return (
-		<div className="container bg-slate-500 mx-auto px-4">
-			<h1>Lista de Compras</h1>
-		</div>
+		<>
+			<Header />
+			<div className="container mx-auto px-4 py-8">
+				<Budge />
+				<div className="lg:max-w-3xl mx-auto">
+					<FormAddProduct />
+					<ProductList />
+				</div>
+			</div>
+		</>
 	);
 }
