@@ -2,25 +2,26 @@
 import { FormEvent, useState } from 'react';
 import { Button } from './Button';
 import { ProductType } from '../types/ProductType';
+import { useProducts } from '../contexts/ProductsContext';
 
-type Props = {
-	onAddProduct: (product: ProductType) => void;
-};
-
-export const FormAddProduct = ({ onAddProduct }: Props) => {
+export const FormAddProduct = ({
+	setAddForm,
+}: {
+	setAddForm: (state: boolean) => void;
+}) => {
+	const productCtx = useProducts();
 	const [productName, setProductName] = useState<string>('');
 	const [priority, setPriority] = useState<number>(2);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const product: ProductType = {
-			id: crypto.randomUUID(),
-			name: productName,
-			priority,
-			price: 0,
-			checked: false,
-		};
-		onAddProduct(product);
+		productCtx?.dispatch({
+			type: 'add',
+			payload: { name: productName, priority },
+		});
+		setAddForm(false);
+		setProductName('');
+		setPriority(2);
 	};
 	return (
 		<form
