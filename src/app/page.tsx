@@ -5,6 +5,8 @@ import { FormAddProduct } from './components/FormAddProduct';
 import { Header } from './components/Header';
 import { ProductList } from './components/ProductList';
 import { ProductType } from './types/ProductType';
+import { ProductsProvider } from './contexts/ProductsContext';
+import { Button } from './components/Button';
 
 const initialProducts: ProductType[] = [
 	{
@@ -17,22 +19,31 @@ const initialProducts: ProductType[] = [
 ];
 
 export default function Home() {
-	const [products, setProducts] = useState<ProductType[]>(initialProducts);
+	const [addForm, setAddForm] = useState(false);
 
-	const handleAddProduct = (product: ProductType) => {
-		setProducts((p) => [...p, product]);
+	const handleAddNew = () => {
+		setAddForm((a) => !a);
 	};
 
 	return (
-		<>
+		<ProductsProvider>
 			<Header />
 			<div className="container mx-auto px-4 py-8">
 				<Budge />
-				<div className="lg:max-w-3xl mx-auto">
-					<FormAddProduct onAddProduct={handleAddProduct} />
-					<ProductList products={products} />
+				<div className="lg:max-w-3xl mx-auto flex flex-col items-center">
+					<ProductList />
+					{addForm && <FormAddProduct setAddForm={setAddForm} />}
+
+					{!addForm && (
+						<Button
+							className="mx-auto"
+							onClick={handleAddNew}
+						>
+							Adicionar novo
+						</Button>
+					)}
 				</div>
 			</div>
-		</>
+		</ProductsProvider>
 	);
 }
